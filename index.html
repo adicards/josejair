@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarjeta de Presentación Digital</title>
+    <!-- Iconos de FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ==========================================================================
+           CONFIGURACIÓN DE DISEÑO (ESTÉTICA PREMIUM: NEGRO Y DORADO)
+           ========================================================================== */
+        :root {
+            --bg-gradient-1: #000000; /* Negro absoluto para el fondo principal */
+            --bg-gradient-2: #0a0a0a; /* Negro sutil para mantener profundidad */
+            --card-bg: rgba(255, 255, 255, 0.02); /* Tarjeta translúcida ultra fina */
+            --card-border: rgba(255, 255, 255, 0.05); /* Borde elegante apenas perceptible */
+            --text-main: #ffffff;     /* Texto principal en blanco puro */
+            --text-muted: #a3a3a3;    /* Texto secundario en un gris claro legible */
+            --accent-color: #c5a059;  /* Dorado clásico premium para iconos y vivos */
+            --accent-hover: #eccda3;  /* Dorado más claro para el efecto al pasar el mouse */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-gradient-1), var(--bg-gradient-2));
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--text-main);
+        }
+
+        /* Contenedor de la Tarjeta */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            width: 100%;
+            max-width: 400px;
+            border-radius: 24px;
+            padding: 32px 24px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Avatar / Foto de Perfil */
+        .profile-img-container {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 20px;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent-color);
+            padding: 3px;
+            background: #000000;
+        }
+
+        /* Información Principal */
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+        }
+
+        .profile-title {
+            font-size: 0.95rem;
+            color: var(--accent-color); /* Título destacado en dorado */
+            font-weight: 500;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-bio {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 28px;
+            padding: 0 10px;
+        }
+
+        /* Contenedor de Enlaces / Redes Sociales */
+        .links-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 14px 20px;
+            border-radius: 14px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.25s ease;
+        }
+
+        .social-link i {
+            font-size: 1.25rem;
+            width: 30px;
+            text-align: left;
+            color: var(--accent-color);
+            transition: color 0.25s ease;
+        }
+
+        .social-link:hover {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+            color: #000000; /* Contraste oscuro sobre el fondo dorado al hacer hover */
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2);
+        }
+
+        .social-link:hover i {
+            color: #000000;
+        }
+
+        /* Botón de Acción Principal */
+        .btn-save {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            background: var(--text-main);
+            color: #000000;
+            padding: 14px;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-save:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        /* QR Integrado */
+        .qr-section {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--card-border);
+        }
+        
+        .qr-icon {
+            color: var(--text-muted);
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .qr-icon:hover {
+            color: var(--accent-color);
+        }
+
+        /* Ventana Emergente (Modal) para el QR */
+        .qr-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .qr-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .qr-modal-content {
+            background: #ffffff;
+            padding: 24px;
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+            max-width: 300px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+        }
+
+        .qr-modal-content h3 {
+            color: #000000;
+            margin-bottom: 16px;
+            font-size: 1.1rem;
+        }
+
+        .qr-modal-content img {
+            width: 200px;
+            height: 200px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .btn-close-modal {
+            margin-top: 16px;
+            background: #000000;
+            color: #ffffff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <!-- Contenedor del Perfil -->
+        <div class="profile-img-container">
+            <img id="user-avatar" src="" alt="Avatar" class="profile-img">
+        </div>
+        
+        <h1 id="user-name" class="profile-name"></h1>
+        <p id="user-title" class="profile-title"></p>
+        <p id="user-bio" class="profile-bio"></p>
+
+        <!-- Contenedor de Redes Sociales dinámicas -->
+        <div id="links-wrapper" class="links-container"></div>
+
+        <!-- Botón de Contacto principal -->
+        <a id="vcard-link" href="#" class="btn-save">
+            <i class="fa-solid fa-user-plus"></i> Guardar Contacto
+        </a>
+        
+        <div class="qr-section">
+            <i id="qr-trigger" class="fa-solid fa-qrcode qr-icon" title="Compartir perfil"></i>
+        </div>
+    </div>
+
+    <!-- Ventana Emergente del QR -->
+    <div id="qr-modal" class="qr-modal">
+        <div class="qr-modal-content">
+            <h3>Escanea para compartir</h3>
+            <div id="qr-image"></div>
+            <button id="qr-close" class="btn-close-modal">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Librería externa para generar códigos QR de forma nativa y segura -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <!-- ==========================================================================
+        SECCIÓN EDITABLE EN JAVASCRIPT
+        ========================================================================== */ -->
+    <script>
+        // 1. DATOS DEL PERFIL
+        const profileData = {
+            name: "José Jair",
+            title: "EL ROMANTICISMO HECHO VOZ",
+            bio: "Más de 20 años cantando profesionalmente homenajeando a los grandes de la balada romántica en restaurantes, bares, eventos privados y más...",
+            avatarUrl: "user-avatar.jpeg", 
+            vCardUrl: "contacto.vcf" 
+        };
+
+        // 2. REDES SOCIALES Y ENLACES (NUEVAS REDES CONFIGURADAS)
+        const socialLinks = [
+            {
+                label: "WhatsApp",
+                icon: "fa-brands fa-whatsapp",
+                url: "https://wa.me/5543592015"
+            },
+            {
+                label: "Facebook",
+                icon: "fa-brands fa-facebook-f", // Icono estilizado de Facebook
+                url: "https://www.facebook.com/share/1913Uv7VdM/"
+            },
+            {
+                label: "TikTok",
+                icon: "fa-brands fa-tiktok", // Icono oficial de TikTok
+                url: "https://www.tiktok.com/@jose_jair_oficial?_r=1&_t=ZS-987pSaBVTG8"
+            },
+            {
+                label: "Correo Electrónico",
+                icon: "fa-solid fa-envelope", // Icono de sobre postal para el correo
+                url: "mailto:jose_jair@live.com.mx"
+            }
+        ];
+
+        /* ==========================================================================
+           PROCESAMIENTO LÓGICO Y ACTIVACIÓN DEL QR
+           ========================================================================== */
+        document.getElementById('user-name').textContent = profileData.name;
+        document.getElementById('user-title').textContent = profileData.title;
+        document.getElementById('user-bio').textContent = profileData.bio;
+        document.getElementById('user-avatar').src = profileData.avatarUrl;
+        document.getElementById('vcard-link').href = profileData.vCardUrl;
+
+        const container = document.getElementById('links-wrapper');
+        socialLinks.forEach(link => {
+            const a = document.createElement('a');
+            a.href = link.url;
+            a.target = "_blank";
+            a.className = "social-link";
+            a.innerHTML = `<i class="${link.icon}"></i> ${link.label}`;
+            container.appendChild(a);
+        });
+
+        // LÓGICA INTERACTIVA DEL CÓDIGO QR
+        const qrTrigger = document.getElementById('qr-trigger');
+        const qrModal = document.getElementById('qr-modal');
+        const qrClose = document.getElementById('qr-close');
+        const qrImageContainer = document.getElementById('qr-image');
+
+        let qrGenerated = null;
+
+        qrTrigger.addEventListener('click', () => {
+            const currentUrl = window.location.href;
+            
+            qrImageContainer.innerHTML = "";
+            
+            qrGenerated = new QRCode(qrImageContainer, {
+                text: currentUrl,
+                width: 200,
+                height: 200,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            const imgQr = qrImageContainer.querySelector('img');
+            if(imgQr) {
+                imgQr.style.margin = "0 auto";
+            }
+            
+            qrModal.classList.add('active');
+        });
+
+        qrClose.addEventListener('click', () => {
+            qrModal.classList.remove('active');
+        });
+
+        qrModal.addEventListener('click', (e) => {
+            if(e.target === qrModal) {
+                qrModal.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
